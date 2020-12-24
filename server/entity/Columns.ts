@@ -9,6 +9,6 @@ export class Columns {
     @Column()
     name!: string;
 
-    @OneToMany(_ => Game, game => game.column)
+    @OneToMany(_ => Game, game => game.column, { nullable: false, eager: true, cascade: true })
     items!: Game[];
 }

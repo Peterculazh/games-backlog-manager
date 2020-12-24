@@ -4,6 +4,7 @@ import Column from "src/components/DragDrop/Column";
 import '../styles/pages/index.sass';
 
 export const getServerSideProps = async (context: any) => {
+    console.log(context.query);
     resetServerContext();
     return {
         props: {

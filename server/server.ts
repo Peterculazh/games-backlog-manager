@@ -62,6 +62,19 @@ export default class ExpressServer extends ServerContext {
   }
 
   private nextMiddleware(req: Request, res: Response, next: NextFunction) {
+
+    res.answer = (
+      data: any,
+      message: any = null,
+      status: number = 200
+    ) => {
+
+      return res.status(status).json({
+        data,
+        message
+      });
+    };
+
     res.print = (
       pathName: string,
       ssrData: any

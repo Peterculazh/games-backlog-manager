@@ -1,17 +1,23 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, BeforeInsert, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Columns } from "./Columns";
 
 @Entity()
-export class Game {
+export class Game extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 
     @Column()
     name!: string;
 
-    @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP"})
-    addedAt!: string;
+    @Column({ nullable: true, type: "bigint" })
+    addedAt!: number;
 
-    @ManyToOne(_=>Columns, column => column.items)
+    @ManyToOne(_ => Columns, column => column.items)
+    @JoinColumn()
     column!: Columns;
+
+    @BeforeInsert()
+    createDate() {
+        this.addedAt = Date.now();
+    }
 }

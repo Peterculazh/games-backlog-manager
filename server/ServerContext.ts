@@ -3,6 +3,7 @@ import { IServerContainer } from "./container";
 declare global {
     namespace Express {
         interface Response {
+            answer: (data: any, message?: any, status?: number) => void;
             print: (pagePath: string, ssrData: any) => void;
         }
     }
