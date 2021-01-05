@@ -15,19 +15,7 @@ export default class DataBase extends ServerContext {
 
     public async init() {
         try {
-            this.connection = await createConnection({
-                type: "postgres",
-                host: "localhost",
-                port: 5432,
-                username: "postgres",
-                password: "root",
-                database: "backlog",
-                entities: [
-                    __dirname + '/entity/*.ts'
-                ],
-                synchronize: true,
-                logging: false
-            });
+            this.connection = await createConnection();
         } catch (err) {
             console.log(err);
         }
