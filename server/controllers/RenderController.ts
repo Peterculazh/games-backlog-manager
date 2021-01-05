@@ -1,5 +1,5 @@
 import { GET, route } from "awilix-express";
-// import { classToPlain } from "class-transformer";
+import { classToPlain } from "class-transformer";
 import { Request, Response } from 'express';
 import ServerContext from "../ServerContext";
 
@@ -10,10 +10,9 @@ export default class RenderController extends ServerContext {
     @route('/')
     async indexPage(_: Request, res: Response) {
         try {
-            // const { ColumnService } = this.di;
-            // const columns = await ColumnService.getAllColumns();
-            // console.log(columns);
-            return res.print('/', { test: "test" });
+            const { ColumnService } = this.di;
+            const columns = await ColumnService.getAllColumns();
+            return res.print('/', { columns: classToPlain(columns) });
         } catch (error) {
             console.log(error);
             return res.print('/', { error });

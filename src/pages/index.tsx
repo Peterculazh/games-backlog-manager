@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { DragDropContext, DropResult, resetServerContext } from 'react-beautiful-dnd';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import Column from "src/components/DragDrop/Column";
 import '../styles/pages/index.sass';
 
 export const getServerSideProps = async (context: any) => {
-    console.log(context.query);
     resetServerContext();
     return {
         props: {
-            ...context.query
+            columns: context.query.ssrData.columns
         }
     }
 }
@@ -56,7 +56,7 @@ const initialState = {
 }
 
 
-export default function Home() {
+export default function Home({ columns }: InferGetServerSidePropsType<typeof getServerSideProps>) {
 
     const [app, setApp] = useState(initialState);
 
