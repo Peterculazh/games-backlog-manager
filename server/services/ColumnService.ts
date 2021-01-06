@@ -1,17 +1,13 @@
-import { Columns } from "../entity/Columns";
-// import { Game } from "../entity/Game";
-import ServerContext from "../ServerContext";
+import MainService from "./RepositoryService";
 
-export default class ColumnsService extends ServerContext {
+export default class ColumnsService extends MainService {
 
     public async getAllColumns() {
-        const columnRepository = this.di.db.connection.getRepository(Columns);
-        return await columnRepository.find();
+        return await this.di.RepositoryService.ColumnsRepository.find();
     }
 
     public async addColumn(data: any) {
-        const columnRepository = this.di.db.connection.getRepository(Columns);
-        return await columnRepository.save({...data});
+        return await this.di.RepositoryService.ColumnsRepository.save({ ...data });
     }
 
 }
