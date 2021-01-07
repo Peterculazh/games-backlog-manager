@@ -8,10 +8,11 @@ interface IItemProps {
 }
 
 export default function Item({ index, item }: IItemProps) {
+    console.log(item);
     return (
         <Draggable
             index={index}
-            draggableId={item.id}
+            draggableId={item.id.toString()}
         >
             {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) =>
                 <div

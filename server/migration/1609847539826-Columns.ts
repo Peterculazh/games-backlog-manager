@@ -8,11 +8,8 @@ export class Columns1609847539826 implements MigrationInterface {
     public async up(_: QueryRunner): Promise<void> {
         try {
             if (!config?.db?.database) {
-                console.log("There no database name in config. Please type it config");
-                return;
+                throw new Error("There no database name in config. Please type it in ormconfig.json in main folder");
             }
-
-            // const dbName = config.db.database;
 
             await getRepository(Columns).save(ColumnsSeed);
         } catch (error) {

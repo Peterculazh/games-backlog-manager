@@ -1,13 +1,7 @@
 import Item from "./Item";
 import { Droppable, DroppableProvided } from 'react-beautiful-dnd';
 import '../../styles/components/DragDrop/column.sass';
-import { IItem } from "src/redux/reducers/games";
-
-export interface IColumn {
-    name: string,
-    items: IItem[]
-}
-
+import { IColumn } from "src/redux/reducers/games";
 interface IColumnProps {
     column: IColumn,
 }

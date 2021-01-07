@@ -1,9 +1,11 @@
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import gameManager from "./reducers/games";
+import { reducer as formReducer } from 'redux-form';
 
 export const store = configureStore({
     reducer: {
-        gameManager
+        gameManager,
+        form: formReducer,
     }
 });
 
