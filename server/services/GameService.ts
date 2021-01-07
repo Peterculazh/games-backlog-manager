@@ -14,9 +14,8 @@ export default class GameService extends ServerContext {
         if (backLogColumn) {
             const game = new Game();
             game.name = data.name;
+            game.column = backLogColumn;
             const savedGame = await gameRepository.save(game);
-            backLogColumn.items.push(savedGame);
-            await columnRepository.save(backLogColumn);
             return savedGame;
         }
         throw new Error("No initial column");

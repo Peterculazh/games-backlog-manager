@@ -1,4 +1,4 @@
-import { BaseEntity, BeforeInsert, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, BeforeInsert, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Columns } from "./Columns";
 
 @Entity()
@@ -13,7 +13,6 @@ export class Game extends BaseEntity {
     addedAt!: number;
 
     @ManyToOne(_ => Columns, column => column.items)
-    @JoinColumn()
     column!: Columns;
 
     @BeforeInsert()

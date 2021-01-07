@@ -1,14 +1,11 @@
 export const ColumnsSeed = [
     {
-      name: "Backlog",
-      items: []
+      name: "Backlog"
     },
     {
-      name: "In progress",
-      items: []
+      name: "In progress"
     },
     {
-      name: "Ready",
-      items: []
+      name: "Ready"
     }
   ];
