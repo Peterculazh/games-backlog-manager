@@ -38,7 +38,7 @@ export default function Home({ columns }: InferGetServerSidePropsType<typeof get
                 columnsData?.length ?
                     <>
                         <div className="save-game-wrapper">
-                            <AddGame onSubmit={handleSaveGame} columns={columnsData} />
+                            <AddGame onSubmit={handleSaveGame} />
                         </div>
                         <DragDropContext
                             onDragEnd={onDragEnd}

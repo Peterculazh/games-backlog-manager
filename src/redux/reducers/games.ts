@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
 export interface IItem {
@@ -20,6 +20,12 @@ export interface IManagerGames {
 const initialState: IManagerGames = {
     columns: []
 }
+
+export const addGame = createAsyncThunk('gameManager/addGame',
+    async (data: { name: string, columnId: string }) => {
+        console.log(data);
+    }
+);
 
 export const gameManager = createSlice({
     name: "gameManager",
