@@ -8,7 +8,6 @@ interface IItemProps {
 }
 
 export default function Item({ index, item }: IItemProps) {
-    console.log(item);
     return (
         <Draggable
             index={index}

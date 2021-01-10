@@ -16,7 +16,7 @@ export default function Column({ column }: IColumnProps) {
                 <h3>{column.name}</h3>
 
                 <Droppable
-                    droppableId={column.name}
+                    droppableId={column.id.toString()}
                 >
                     {(provided: DroppableProvided) =>
                         <div
@@ -24,7 +24,7 @@ export default function Column({ column }: IColumnProps) {
                             ref={provided.innerRef}
                             {...provided.droppableProps}
                             className="column-games-list">
-                            {column.items.map((item, index) => <Item index={index} item={item} key={item.name} />)}
+                            {column.items.map((item, index) => <Item index={index} item={item} key={item.id} />)}
                             {provided.placeholder}
                         </div>
 

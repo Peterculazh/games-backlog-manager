@@ -3,9 +3,10 @@ import { InferGetServerSidePropsType } from 'next'
 import Column from "src/components/DragDrop/Column";
 import '../styles/pages/index.sass';
 import { useDispatch, useSelector } from "react-redux";
-import { getAllColumns, setAllColumns } from "src/redux/reducers/games";
+import { addGame, getAllColumns, getStatus, moveToColumn, setAllColumns } from "src/redux/reducers/games";
 import { RootState } from "src/redux/store";
 import AddGame from 'src/components/Forms/SaveGame';
+import { useEffect } from 'react';
 
 export const getServerSideProps = async (context: any) => {
     resetServerContext();
@@ -19,17 +20,26 @@ export const getServerSideProps = async (context: any) => {
 export default function Home({ columns }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const dispatch = useDispatch();
     // setTimeout(() => dispatch(setAllColumns(columns)), 3000); // Long fetching simulate
-    dispatch(setAllColumns(columns));
+    useEffect(() => {
+        dispatch(setAllColumns(columns));
+    }, []);
 
     const columnsData = useSelector((state: RootState) => getAllColumns(state));
+    const status = useSelector((state: RootState) => getStatus(state));
 
-
-    const onDragEnd = (_: DropResult) => {
-
+    const onDragEnd = (dragEnd: DropResult) => {
+        if (dragEnd.destination?.droppableId) {
+            dispatch(moveToColumn({
+                sourceColumnId: parseInt(dragEnd.source.droppableId),
+                draggableId: parseInt(dragEnd.draggableId),
+                targetColumnId: parseInt(dragEnd.destination.droppableId),
+                destinationIndex: dragEnd.destination.index
+            }));
+        }
     }
 
     const handleSaveGame = (data: any) => {
-        console.log(data);
+        dispatch(addGame(data));
     }
 
     return (
@@ -37,15 +47,21 @@ export default function Home({ columns }: InferGetServerSidePropsType<typeof get
             {
                 columnsData?.length ?
                     <>
-                        <div className="save-game-wrapper">
-                            <AddGame onSubmit={handleSaveGame} />
+                        {status === "loading" ?
+                            <div className="save-game-wrapper">
+                                Sending data
                         </div>
+                            :
+                            <div className="save-game-wrapper">
+                                <AddGame onSubmit={handleSaveGame} />
+                            </div>
+                        }
                         <DragDropContext
                             onDragEnd={onDragEnd}
                         >
                             <div className="drag-wrapper">
                                 {
-                                    columnsData.map(column => <Column key={column.name} column={column} />)
+                                    columnsData.map(column => <Column key={column.id} column={column} />)
                                 }
                             </div>
                         </DragDropContext>
