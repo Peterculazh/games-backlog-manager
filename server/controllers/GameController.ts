@@ -1,5 +1,6 @@
 import { GET, POST, route } from "awilix-express";
 import { Request, Response } from 'express';
+import CustomError, { ERROR_CODE } from "../helper/error";
 import ServerContext from "../ServerContext";
 
 @route('/api/games')
@@ -26,8 +27,13 @@ export default class RenderController extends ServerContext {
             const game = await GameService.addGame(req.body);
             return res.answer({ game });
         } catch (error) {
-            console.log(error);
-            return res.answer({ error }, "Happened error", 500);
+            if (error instanceof CustomError) {
+                if (error.code === ERROR_CODE.E1) {
+                    return res.answer({ error: error.error_message }, error.error_message, 400);
+                }
+            } else {
+                return res.answer({ error }, "Happened error", 500);
+            }
         }
     }
 }

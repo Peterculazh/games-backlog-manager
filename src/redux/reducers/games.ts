@@ -50,7 +50,7 @@ export const gameManager = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(addGame.pending, (state: IManagerGames, _action) => {
-            state.status = "loading";
+            // state.status = "loading";
         });
         builder.addCase(addGame.fulfilled, (state: IManagerGames, action) => {
             const game = action.payload;
