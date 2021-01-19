@@ -17,6 +17,7 @@ export default class GameService extends ServerContext {
                 const game = new Game();
                 game.name = data.name;
                 game.column = backLogColumn;
+                game.index = backLogColumn.items.length;
                 const savedGame = await gameRepository.save(game);
                 return savedGame;
             } else {
@@ -31,6 +32,10 @@ export default class GameService extends ServerContext {
                 message: "Incorrect data"
             }, `Incorrect data in "addGame"`);
         }
+    }
+
+    public async moveGame(data: any){
+        console.log("moveGame", data);
     }
 
 }

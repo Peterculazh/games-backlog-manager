@@ -31,6 +31,13 @@ export const addGame = createAsyncThunk('gameManager/addGame',
     }
 );
 
+export const moveGame = createAsyncThunk('gameManager/moveGame',
+    async (data: { name: string, columnId: string }) => {
+        const result = await axios.post('/api/games/add', data);
+        return result.data.data.game;
+    }
+);
+
 export const gameManager = createSlice({
     name: "gameManager",
     initialState,
