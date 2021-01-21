@@ -17,7 +17,6 @@ export default class GameService extends ServerContext {
                 const game = new Game();
                 game.name = data.name;
                 game.column = backLogColumn;
-                game.index = backLogColumn.items.length;
                 const savedGame = await gameRepository.save(game);
                 return savedGame;
             } else {
@@ -34,8 +33,45 @@ export default class GameService extends ServerContext {
         }
     }
 
-    public async moveGame(data: any){
-        console.log("moveGame", data);
+    public async moveGame(data: {
+        sourceIndex: number;
+        sourceColumnId: number;
+        draggableId: number;
+        targetColumnId: number;
+        destinationIndex: number;
+    }) {
+        if (data.sourceColumnId && data.targetColumnId) {
+            if (data.sourceColumnId === data.targetColumnId) {
+                const [game, sourceColumn] = await Promise.all([
+                    this.di.RepositoryService.GameRepository.findOne({ id: data.draggableId }),
+                    this.di.RepositoryService.ColumnsRepository.findOne({ id: data.sourceColumnId })
+                ]);
+                if (game && sourceColumn) {
+                    sourceColumn.items.splice(data.sourceIndex, 1);
+                    sourceColumn.items.splice(data.destinationIndex, 0, game);
+                    const test = await this.di.RepositoryService.ColumnsRepository.save(sourceColumn);
+                    console.log("source", test);
+                    this.di.RepositoryService.GameRepository.save(game);
+                    return true;
+                }
+            } else {
+                const [game, sourceColumn, targetColumn] = await Promise.all([
+                    this.di.RepositoryService.GameRepository.findOne({ id: data.draggableId }),
+                    this.di.RepositoryService.ColumnsRepository.findOne({ id: data.sourceColumnId }),
+                    this.di.RepositoryService.ColumnsRepository.findOne({ id: data.targetColumnId }),
+                ]);
+                if (game && sourceColumn && targetColumn) {
+                    sourceColumn.items.splice(data.sourceIndex, 1);
+                    targetColumn.items.splice(data.destinationIndex, 0, game);
+                    console.log('target', targetColumn);
+                    await this.di.RepositoryService.ColumnsRepository.save(sourceColumn);
+                    await this.di.RepositoryService.ColumnsRepository.save(targetColumn);
+                    this.di.RepositoryService.GameRepository.save(game);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }

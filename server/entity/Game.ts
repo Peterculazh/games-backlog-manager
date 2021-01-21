@@ -12,9 +12,6 @@ export class Game extends BaseEntity {
     @Column({ nullable: true, type: "bigint" })
     addedAt!: number;
 
-    @Column()
-    index!: number;
-
     @ManyToOne(_ => Columns, column => column.items)
     column!: Columns;
 

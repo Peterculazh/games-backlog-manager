@@ -32,9 +32,16 @@ export const addGame = createAsyncThunk('gameManager/addGame',
 );
 
 export const moveGame = createAsyncThunk('gameManager/moveGame',
-    async (data: { name: string, columnId: string }) => {
-        const result = await axios.post('/api/games/add', data);
-        return result.data.data.game;
+    async (data: {
+        sourceIndex: number;
+        sourceColumnId: number;
+        draggableId: number;
+        targetColumnId: number;
+        destinationIndex: number;
+    }) => {
+        const result = await axios.post('/api/games/move', data);
+        console.log("result", result.data.data.success);
+        return result.data.result;
     }
 );
 

@@ -3,7 +3,7 @@ import { InferGetServerSidePropsType } from 'next'
 import Column from "src/components/DragDrop/Column";
 import '../styles/pages/index.sass';
 import { useDispatch, useSelector } from "react-redux";
-import { addGame, getAllColumns, getStatus, moveToColumn, setAllColumns } from "src/redux/reducers/games";
+import { addGame, getAllColumns, getStatus, moveGame, moveToColumn, setAllColumns } from "src/redux/reducers/games";
 import { RootState } from "src/redux/store";
 import AddGame from 'src/components/Forms/SaveGame';
 import { useEffect } from 'react';
@@ -29,12 +29,15 @@ export default function Home({ columns }: InferGetServerSidePropsType<typeof get
 
     const onDragEnd = (dragEnd: DropResult) => {
         if (dragEnd.destination?.droppableId) {
-            dispatch(moveToColumn({
+            const data = {
+                sourceIndex: dragEnd.source.index,
                 sourceColumnId: parseInt(dragEnd.source.droppableId),
                 draggableId: parseInt(dragEnd.draggableId),
                 targetColumnId: parseInt(dragEnd.destination.droppableId),
                 destinationIndex: dragEnd.destination.index
-            }));
+            };
+            dispatch(moveToColumn(data));
+            dispatch(moveGame(data))
         }
     }
 

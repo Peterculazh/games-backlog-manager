@@ -32,6 +32,26 @@ export default class RenderController extends ServerContext {
                     return res.answer({ error: error.error_message }, error.error_message, 400);
                 }
             } else {
+                console.log("error",error);
+                return res.answer({ error }, "Happened error", 500);
+            }
+        }
+    }
+
+    @POST()
+    @route('/move')
+    async moveGame(req: Request, res: Response) {
+        try {
+            const { GameService } = this.di;
+            const result = await GameService.moveGame(req.body);
+            return res.answer({ success: result });
+        } catch (error) {
+            if (error instanceof CustomError) {
+                if (error.code === ERROR_CODE.E1) {
+                    return res.answer({ error: error.error_message }, error.error_message, 400);
+                }
+            } else {
+                console.log("error",error);
                 return res.answer({ error }, "Happened error", 500);
             }
         }
